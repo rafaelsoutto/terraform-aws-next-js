@@ -9,7 +9,9 @@ locals {
 
 resource "aws_s3_bucket" "static_upload" {
   bucket_prefix = "${var.deployment_name}-tfn-deploy"
-  force_destroy = true
+  force_destroy = true  
+  control_object_ownership = true
+  object_ownership = "BucketOwnerPreferred"
 
   tags = merge(var.tags, var.tags_s3_bucket)
 }
