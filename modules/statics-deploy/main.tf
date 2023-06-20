@@ -10,10 +10,15 @@ locals {
 resource "aws_s3_bucket" "static_upload" {
   bucket_prefix = "${var.deployment_name}-tfn-deploy"
   force_destroy = true  
-  control_object_ownership = true
-  object_ownership = "BucketOwnerPreferred"
 
   tags = merge(var.tags, var.tags_s3_bucket)
+}
+
+resource "aws_s3_bucket_ownership_controls" "static_upload" {
+  bucket = aws_s3_bucket.static_upload.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
 }
 
 resource "aws_s3_bucket_acl" "static_upload" {
